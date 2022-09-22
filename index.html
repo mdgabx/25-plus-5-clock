@@ -77,6 +77,26 @@
                 width: 40% !important;
             }
 
+            .options {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: row;
+            }
+
+            .options > button {
+                cursor: pointer;
+                background: transparent;
+                border: none;
+                color: #fff;
+                margin: 0;
+                padding: 0;
+            }
+
+            span:hover {
+                opacity: 0.7;
+            }
+
         </style>
     </head>
     <body> 
@@ -91,6 +111,46 @@
 
         const [breakLen, setBreakLen] = React.useState(5);
         const [sessionLen, setSessionLen] = React.useState(25);
+        const [play, setPlay] = React.useState(false);
+        const [timeType, setTimeType] = React.useState("SESSION");
+        const [timeLeft, setTimeLeft] = React.useState(1500);
+
+        const handleBreakIncrement = () => {
+            if(breakLen < 60) {
+                setBreakLen(breakLen + 1);
+            }
+        };
+
+        const handleBreakDecrement = () => {
+            if(breakLen > 1) {
+                setBreakLen(breakLen - 1);
+            }
+        };
+
+        const handleSessionIncrement = () => {
+            if(sessionLen < 60) {
+                setSessionLen(sessionLen + 1);
+            }
+        };
+
+        const handleSessionDecrement = () => {
+            if(sessionLen > 1) {
+                setSessionLen(sessionLen - 1);
+            }
+        };
+
+        const timeFormatter = () => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft - minutes * 60;
+            const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+            return `${formattedMinutes}:${formattedSeconds}`;
+        };
+
+   
+        const title = timeType === "SESSION" ? "Session" : "Break";
+
+        const {handlePlay, handleReset} = {}
 
         return (
             <div className="container">  
@@ -100,33 +160,38 @@
                         <div className="break-con">
                             <label id="break-label">Break Length</label>
                             <div className="break-options">
-                                <button id="break-decrement"><span className="material-icons">arrow_drop_down</span></button>
+                                <button disabled={play} id="break-decrement" onClick={handleBreakDecrement}><span className="material-icons">arrow_drop_down</span></button>
                                 <span id="break-length">{breakLen}</span>
-                                <button id="break-increment"><span className="material-icons">arrow_drop_up</span></button>
+                                <button disabled={play} id="break-increment" onClick={handleBreakIncrement}><span className="material-icons">arrow_drop_up</span></button>
                             </div>
                         </div> 
                         <div className="session-con">
                             <label id="session-label">Session Length</label>
                             <div className="session-options">
-                                <button id="session-decrement"><span className="material-icons">arrow_drop_down</span></button>
-                                <span id="session-length">{sessionLen}</span>
-                                <button id="session-increment"><span className="material-icons">arrow_drop_up</span></button>
+                                <button disabled={play} id="session-decrement" onClick={handleSessionDecrement}><span className="material-icons">arrow_drop_down</span></button>
+                                <span disabled={play} id="session-length">{sessionLen}</span>
+                                <button id="session-increment" onClick={handleSessionIncrement}><span className="material-icons">arrow_drop_up</span></button>
                             </div>
                         </div>
                     </div>
                     <div className="timer-con">
                         <div className="timer">
-                                <h2>Session</h2>
-                                <div>25: 00 </div>
+                                <h2 id="timer-label">{title}</h2>
+                                <div id="time-left">{timeFormatter()}</div>
                         </div>
                         <div className="options">
-                            <span className="material-icons">play_arrow</span>
-                            <span className="material-icons">pause</span>
-                            <span className="material-icons">replay</span>
+                            <button onClick={handlePlay}>
+                                <span className="material-icons" id="start_stop">play_arrow</span>
+                                <span className="material-icons">pause</span>
+                            </button>
+                            <button onClick={handleReset} className="material-icons" id="reset">replay</button>
                         </div>
                     </div>
                 </div>
+                <audio id="beep" preload="auto" src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav">
+            </audio>
             </div>
+           
         );
     }
 
