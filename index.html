@@ -6,6 +6,7 @@
         <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
         <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
         <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>
 
             html {
@@ -17,17 +18,65 @@
 
             body {
                 min-height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
                 background: linear-gradient(to right, #970d1a, #4e204d);
                 background-size: contain;
+                font-family: Consolas;
             }
 
             .container {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                flex-direction: column;
                 height: 100%;
                 color: #fff;
             }
+
+            .length-groups {
+                display: flex;
+                align-items: stretch;
+                justify-content: space-evenly;
+                flex-direction: row;
+                width: 600px;
+            }
+
+            label {
+                text-align: center;
+                width: 100%;
+                margin: 10px;
+            }
+
+            .break-con, .session-con {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+            }
+
+            .break-options span, .session-options span {
+                padding: 0 20px;
+            }
+
+            .timer-con, .timer {
+                width: 100%;
+                margin: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+            }
+
+            .timer {
+                border: 10px solid #fff;
+                margin: 30px 20px;
+                padding: 10px;
+                width: 40% !important;
+            }
+
         </style>
     </head>
     <body> 
@@ -36,10 +85,47 @@
 </html>
 
 <script type="text/babel">
+    
+
     const App = () => {
+
+        const [breakLen, setBreakLen] = React.useState(5);
+        const [sessionLen, setSessionLen] = React.useState(25);
+
         return (
             <div className="container">  
-                <h1>25 + 5 Clock</h1>
+                    <h1>25 + 5 Clock</h1>
+                <div className="main">
+                    <div className="length-groups">
+                        <div className="break-con">
+                            <label id="break-label">Break Length</label>
+                            <div className="break-options">
+                                <button id="break-decrement"><span className="material-icons">arrow_drop_down</span></button>
+                                <span id="break-length">{breakLen}</span>
+                                <button id="break-increment"><span className="material-icons">arrow_drop_up</span></button>
+                            </div>
+                        </div> 
+                        <div className="session-con">
+                            <label id="session-label">Session Length</label>
+                            <div className="session-options">
+                                <button id="session-decrement"><span className="material-icons">arrow_drop_down</span></button>
+                                <span id="session-length">{sessionLen}</span>
+                                <button id="session-increment"><span className="material-icons">arrow_drop_up</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="timer-con">
+                        <div className="timer">
+                                <h2>Session</h2>
+                                <div>25: 00 </div>
+                        </div>
+                        <div className="options">
+                            <span className="material-icons">play_arrow</span>
+                            <span className="material-icons">pause</span>
+                            <span className="material-icons">replay</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
