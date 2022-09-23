@@ -115,6 +115,12 @@
         const [timeType, setTimeType] = React.useState("SESSION");
         const [timeLeft, setTimeLeft] = React.useState(1500);
 
+        const timeout = setTimeout(() => {
+            if(timeLeft && play) {
+                setTimeLeft(timeLeft - 1)
+            }
+        }, 1000);
+
         const handleBreakIncrement = () => {
             if(breakLen < 60) {
                 setBreakLen(breakLen + 1);
@@ -130,12 +136,14 @@
         const handleSessionIncrement = () => {
             if(sessionLen < 60) {
                 setSessionLen(sessionLen + 1);
+                setTimeLeft(timeLeft + 60);
             }
         };
 
         const handleSessionDecrement = () => {
             if(sessionLen > 1) {
                 setSessionLen(sessionLen - 1);
+                setTimeLeft(timeLeft - 60);
             }
         };
 
@@ -147,10 +155,57 @@
             return `${formattedMinutes}:${formattedSeconds}`;
         };
 
+        const handlePlay = () => {
+            clearTimeout(timeout);
+
+            setPlay(!play);
+        }
+
+        const clock = () => {
+            if(play) {
+                timeout
+                resetTimer()
+            } else {
+                clearTimeout(timeout);
+            }
+        };
+
+        const resetTimer = () => {
+            const audio = document.getElementById("beep");
+
+            if(!timeLeft && timeType === "SESSION") {
+                setTimeLeft(breakLen * 60)
+                setTimeType("BREAK");
+                audio.play();
+            }
+
+            if(!timeLeft && timeType === "BREAK") {
+                setTimeLeft(sessionLen * 60)
+                setTimeType("SESSION")
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        };
+
+        const handleReset = () => {
+            clearTimeout(timeout);
+            setPlay(false);
+            setTimeLeft(1500);
+            setBreakLen(5);
+            setSessionLen(25);
+            setTimeType("SESSION");
+            const audio = document.getElementById("beep");
+            audio.pause();
+            audio.currentTime = 0;
+        };
+
+
+
+        React.useEffect(() => {
+            clock()
+        }, [play, timeLeft, timeout])
    
         const title = timeType === "SESSION" ? "Session" : "Break";
-
-        const {handlePlay, handleReset} = {}
 
         return (
             <div className="container">  
