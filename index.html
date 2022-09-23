@@ -19,7 +19,7 @@
             body {
                 min-height: 100%;
                 display: flex;
-                align-items: center;
+                align-items: stretch;
                 justify-content: center;
                 flex-direction: column;
                 background: linear-gradient(to right, #970d1a, #4e204d);
@@ -102,6 +102,12 @@
                 color: yellow;
             }
 
+
+            @media only screen and (max-width: 560px) {
+                .length-groups {
+                    flex-direction: column;
+                }
+            }
         </style>
     </head>
     <body> 
