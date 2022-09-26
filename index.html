@@ -235,8 +235,8 @@
                             <label id="session-label">Session Length</label>
                             <div className="session-options">
                                 <button disabled={play} id="session-decrement" onClick={handleSessionDecrement}><span className="material-icons">arrow_drop_down</span></button>
-                                <span disabled={play} id="session-length">{sessionLen}</span>
-                                <button id="session-increment" onClick={handleSessionIncrement}><span className="material-icons">arrow_drop_up</span></button>
+                                <span  id="session-length">{sessionLen}</span>
+                                <button  disabled={play} id="session-increment" onClick={handleSessionIncrement}><span className="material-icons">arrow_drop_up</span></button>
                             </div>
                         </div>
                     </div>
@@ -247,8 +247,8 @@
                         </div>
                         <div className="options">
                             <button onClick={handlePlay}>
-                                <span className="material-icons" id="start_stop">play_arrow</span>
-                                <span className="material-icons">pause</span>
+                                { !play && <span className="material-icons" id="start_stop">play_arrow</span> }
+                                { play && <span className="material-icons">pause</span> }
                             </button>
                             <button onClick={handleReset} className="material-icons" id="reset">replay</button>
                         </div>
